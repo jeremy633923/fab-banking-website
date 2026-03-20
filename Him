@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADIB | Digital Banking 2.0</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&family=Montserrat:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --adib-blue: #002D62;
+            --adib-gold: #B38B3F;
+            --light-gray: #f8f9fa;
+            --white: #ffffff;
+            --text: #2C3E50;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', 'Noto Sans Arabic', sans-serif; background: var(--light-gray); color: var(--text); }
+
+        /* --- DASHBOARD LAYOUT --- */
+        .app-container { display: flex; min-height: 100vh; }
+        
+        .sidebar { width: 280px; background: var(--adib-blue); color: white; padding: 40px 20px; position: fixed; height: 100%; }
+        .main-view { margin-left: 280px; width: calc(100% - 280px); padding: 40px; }
+
+        /* --- INTERACTIVE CARDS --- */
+        .balance-card {
+            background: linear-gradient(135deg, var(--adib-blue) 0%, #004080 100%);
+            color: white; padding: 35px; border-radius: 20px; margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0,45,98,0.2);
+        }
+
+        .action-bar { display: flex; gap: 15px; margin-bottom: 30px; }
+        .action-btn { 
+            background: white; padding: 15px 25px; border-radius: 12px; 
+            font-weight: 700; font-size: 13px; cursor: pointer; border: 1px solid #eee;
+            transition: 0.2s; flex: 1; text-align: center;
+        }
+        .action-btn:hover { border-color: var(--adib-gold); color: var(--adib-gold); }
+
+        /* --- TRANSACTION LIST (INTERACTIVE) --- */
+        .trans-table { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .trans-row { 
+            display: flex; justify-content: space-between; padding: 20px; 
+            border-bottom: 1px solid #f1f1f1; cursor: pointer; transition: background 0.2s;
+        }
+        .trans-row:hover { background: #fcfcfc; }
+        .trans-name { font-weight: 700; font-size: 15px; color: var(--adib-blue); }
+        .trans-meta { font-size: 11px; color: #888; margin-top: 4px; }
+        .trans-amt { font-weight: 700; font-size: 16px; align-self: center; }
+
+        /* --- MODAL (TRANSACTION DETAILS) --- */
+        .modal-overlay {
+            display: none; position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background: white; width: 400px; padding: 30px; border-radius: 20px;
+            text-align: center; position: relative;
+        }
+        .modal-header { border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
+        .detail-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px; }
+        .detail-label { color: #888; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="sidebar">
+            <h1 style="letter-spacing: 3px; margin-bottom: 50px;">ADIB</h1>
+            <p style="opacity: 0.6; font-size: 12px; margin-bottom: 10px;">MAIN MENU</p>
+            <nav>
+                <div style="margin-bottom: 20px; font-weight: 700;">DASHBOARD</div>
+                <div style="margin-bottom: 20px; opacity: 0.7;">TRANSFERS</div>
+                <div style="margin-bottom: 20px; opacity: 0.7;">BILL PAYMENTS</div>
+                <div style="margin-bottom: 20px; opacity: 0.7;">MY SHARIA GOALS</div>
+            </nav>
+        </div>
+
+        <div class="main-view">
+            <div class="balance-card">
+                <p style="font-size: 12px; opacity: 0.8;">CURRENT BALANCE</p>
+                <h1 style="font-size: 48px; margin: 10px 0;">54,000.95 <span style="font-size: 20px;">AED</span></h1>
+                <p style="font-size: 14px; opacity: 0.7;">Ghina Account: 27195985</p>
+            </div>
+
+            <div class="action-bar">
+                <div class="action-btn">Send Money</div>
+                <div class="action-btn">Download Statement</div>
+                <div class="action-btn">Account Info</div>
+            </div>
+
+            <h3>Recent Activity</h3>
+            <div class="trans-table" id="transactionList">
+                </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="mName">Transaction Details</h2>
+            </div>
+            <div id="modalBody">
+                </div>
+            <button class="btn-signin" style="width: 100%; background: var(--adib-blue); color: white; border:none; padding: 12px; border-radius: 8px; cursor: pointer;" onclick="closeModal()">Close Details</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. EXTENDED DATASET (IDs and Arabic Names)
+        const transactions = [
+            { id: "TXN-882190", name: "Transfer Withdrawal-MOBN", arName: "سحب تحويل - موبايل", date: "Mar 20, 2026", amt: "- 50.00", status: "Success", ref: "FT260805521" },
+            { id: "TXN-993201", name: "Majid Al Futtaim Hypermarkets", arName: "ماجد الفطيم هايبر ماركت", date: "Mar 19, 2026", amt: "- 470.00", status: "Success", ref: "POS882100" },
+            { id: "TXN-774112", name: "Salary Credit - AD Govt", arName: "إيداع الراتب - حكومة أبوظبي", date: "Mar 18, 2026", amt: "+ 25,000.00", status: "Processed", ref: "SAL-99201" },
+            { id: "TXN-112233", name: "Etisalat Bill Payment", arName: "دفع فاتورة اتصالات", date: "Mar 15, 2026", amt: "- 850.00", status: "Success", ref: "ETI-331002" }
+        ];
+
+        // 2. RENDER TRANSACTIONS
+        const listContainer = document.getElementById('transactionList');
+        
+        transactions.forEach((t, index) => {
+            const row = document.createElement('div');
+            row.className = 'trans-row';
+            row.onclick = () => showDetails(index);
+            row.innerHTML = `
+                <div>
+                    <div class="trans-name">${t.name}</div>
+                    <div class="trans-meta">${t.date} | ID: ${t.id}</div>
+                </div>
+                <div class="trans-amt ${t.amt.includes('+') ? 'pos' : ''}">${t.amt} AED</div>
+            `;
+            listContainer.appendChild(row);
+        });
+
+        // 3. INTERACTIVE MODAL LOGIC
+        function showDetails(index) {
+            const t = transactions[index];
+            const modalBody = document.getElementById('modalBody');
+            document.getElementById('mName').innerText = t.name;
+            
+            modalBody.innerHTML = `
+                <div class="detail-row"><span class="detail-label">Arabic Name</span><span>${t.arName}</span></div>
+                <div class="detail-row"><span class="detail-label">Transaction ID</span><span>${t.id}</span></div>
+                <div class="detail-row"><span class="detail-label">Reference No</span><span>${t.ref}</span></div>
+                <div class="detail-row"><span class="detail-label">Status</span><span style="color:green">${t.status}</span></div>
+                <div class="detail-row" style="border-top: 1px solid #eee; padding-top:10px; margin-top:10px;">
+                    <span class="detail-label">Amount</span><span style="font-weight:700">${t.amt} AED</span>
+                </div>
+            `;
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
