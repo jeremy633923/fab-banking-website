@@ -3,166 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Banking | FAB</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        
-        :root {
-            --fab-blue: #003366;
-            --fab-gold: #c5a059;
-            --success: #2e7d32;
-            --bg: #f4f7f9;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg); color: #333; overflow-x: hidden; }
-
-        /* --- LOGIN PAGE STYLES --- */
-        #login-page {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(rgba(0,51,102,0.7), rgba(0,51,102,0.7)), url('https://www.bankfab.com/-/media/fab/images/personal/hero-banners/personal-home-banner.jpg');
-            background-size: cover;
-        }
-
-        .login-card {
-            background: white;
-            padding: 40px;
-            border-radius: 8px;
-            width: 400px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-            text-align: center;
-        }
-
-        .login-card h2 { color: var(--fab-blue); margin-bottom: 25px; font-size: 22px; }
-        .input-group { text-align: left; margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 12px; font-weight: 700; color: #666; margin-bottom: 8px; }
-        .input-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; outline: none; }
-        
-        .sign-in-btn { 
-            width: 100%; padding: 14px; background: var(--fab-blue); color: white; 
-            border: none; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 15px;
-        }
-
-        /* --- DASHBOARD STYLES (HIDDEN BY DEFAULT) --- */
-        #dashboard { display: none; }
-        
-        nav.dash-nav {
-            background: white; padding: 15px 5%; display: flex; 
-            justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd;
-        }
-
-        .account-summary { padding: 40px 5%; background: white; margin-bottom: 20px; }
-        .balance-card {
-            background: var(--fab-blue); color: white; padding: 30px; 
-            border-radius: 12px; display: inline-block; min-width: 350px;
-        }
-        .balance-amount { font-size: 36px; font-weight: 800; margin: 10px 0; }
-
-        .transaction-section { padding: 0 5%; }
-        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; }
-        th { background: #eee; padding: 15px; text-align: left; font-size: 13px; color: #666; }
-        td { padding: 15px; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
-        .amt-pos { color: var(--success); font-weight: 700; }
-        .amt-neg { color: #d32f2f; font-weight: 700; }
-
-    </style>
+    <title>FAB Banking App</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
 </head>
 <body>
-
-    <div id="login-page">
-        <div class="login-card">
-            <h1 style="color:var(--fab-blue); margin-bottom:10px;">FAB</h1>
-            <h2>Personal Online Banking</h2>
-            <div class="input-group">
-                <label>USER ID</label>
-                <input type="text" id="uid" placeholder="Enter any Username">
-            </div>
-            <div class="input-group">
-                <label>PASSWORD</label>
-                <input type="password" id="pwd" placeholder="Enter any Password">
-            </div>
-            <button class="sign-in-btn" onclick="handleLogin()">SECURE SIGN IN</button>
-        </div>
-    </div>
-
-    <div id="dashboard">
-        <nav class="dash-nav">
-            <h2 style="color:var(--fab-blue)">FAB | Dashboard</h2>
-            <div style="font-size: 14px; font-weight: 600;">Welcome, User <span style="margin-left:20px; cursor:pointer; color:red" onclick="location.reload()">Logout</span></div>
+    <header>
+        <h1>FAB Banking App</h1>
+        <nav>
+            <ul>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#accounts">Accounts</a></li>
+                <li><a href="#cards">Cards</a></li>
+                <li><a href="#transfers">Transfers</a></li>
+                <li><a href="#bills">Bills</a></li>
+                <li><a href="#profile">Profile</a></li>
+            </ul>
         </nav>
-
-        <div class="account-summary">
-            <div class="balance-card">
-                <p style="font-size: 12px; opacity: 0.8; letter-spacing: 1px;">TOTAL CURRENT BALANCE</p>
-                <div class="balance-amount">54,000.00 AED</div>
-                <p style="font-size: 12px;">Account Number: **** 8282</p>
+    </header>
+    <main>
+        <section id="dashboard">
+            <h2>Dashboard</h2>
+            <div class="quick-actions">
+                <button onclick="openTransferForm()">Quick Transfer</button>
+                <button onclick="openBillPayment()">Pay Bills</button>
+                <button onclick="openCardManagement()">Manage Cards</button>
             </div>
-        </div>
-
-        <div class="transaction-section">
-            <h3 style="margin-bottom: 20px; color: var(--fab-blue);">Recent Transactions (March 1 - March 20, 2026)</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>DATE</th>
-                        <th>DESCRIPTION</th>
-                        <th>STATUS</th>
-                        <th>AMOUNT</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>March 20, 2026</td>
-                        <td>Online Transfer - Abdulla Humaid</td>
-                        <td style="color:green">Completed</td>
-                        <td class="amt-neg">- 19,602.90 AED</td>
-                    </tr>
-                    <tr>
-                        <td>March 19, 2026</td>
-                        <td>POS Purchase - Majid Saleh</td>
-                        <td style="color:green">Completed</td>
-                        <td class="amt-neg">- 3,233.34 AED</td>
-                    </tr>
-                    <tr>
-                        <td>March 18, 2026</td>
-                        <td>Salary Credit - ADPC</td>
-                        <td style="color:green">Completed</td>
-                        <td class="amt-pos">+ 25,000.00 AED</td>
-                    </tr>
-                    <tr>
-                        <td>March 18, 2026</td>
-                        <td>Online Transfer - Hamdan Shaid</td>
-                        <td style="color:green">Completed</td>
-                        <td class="amt-neg">- 10,525.00 AED</td>
-                    </tr>
-                    <tr>
-                        <td>March 10, 2026</td>
-                        <td>Utility Bill - DEWA</td>
-                        <td style="color:green">Completed</td>
-                        <td class="amt-neg">- 850.00 AED</td>
-                    </tr>
-                    <tr>
-                        <td>March 01, 2026</td>
-                        <td>Opening Balance Carryforward</td>
-                        <td style="color:gray">Processed</td>
-                        <td class="amt-pos">+ 63,211.24 AED</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <script>
-        function handleLogin() {
-            // Bypass logic: Show the dashboard regardless of what is typed
-            document.getElementById('login-page').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
-            
-            console.log("Session Started for user at " + new Date().toLocaleString());
-        }
-    </script>
+            <div class="transaction-history">
+                <h3>Recent Transactions</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2026-03-18</td><td>Transfer to John Doe</td><td>$50.00</td><td>Completed</td></tr>
+                        <tr><td>2026-03-17</td><td>Bill Payment - Internet</td><td>$75.00</td><td>Completed</td></tr>
+                        <tr><td>2026-03-16</td><td>Deposit from Employer</td><td>$1500.00</td><td>Completed</td></tr>
+                        <tr><td>2026-03-15</td><td>Withdrawal - ATM</td><td>$100.00</td><td>Completed</td></tr>
+                        <tr><td>2026-03-14</td><td>Purchase at Store</td><td>$30.00</td><td>Completed</td></tr>
+                        <tr><td>2026-03-13</td><td>Transfer to Jane Smith</td><td>$200.00</td><td>Pending</td></tr>
+                        <tr><td>2026-03-12</td><td>Bill Payment - Electricity</td><td>$60.00</td><td>Completed</td></tr>
+                        <tr><td>2026-03-11</td><td>Deposit from Family</td><td>$300.00</td><td>Completed</td></tr>
+                        <tr><td>2026-03-10</td><td>Transfer to Sam Wilson</td><td>$150.00</td><td>Completed</td></tr>
+                        <tr><td>2026-03-09</td><td>Purchase Online</td><td>$25.00</td><td>Completed</td></tr>
+                        <tr><td>2026-03-08</td><td>Charity Donation</td><td>$20.00</td><td>Completed</td></tr>
+                        <tr><td>2026-03-07</td><td>Transfer from Investment</td><td>$500.00</td><td>Completed</td></tr>
+                        <tr><td>2026-03-06</td><td>ATM Fee</td><td>$2.00</td><td>Completed</td></tr>
+                        <tr><td>2026-03-05</td><td>Withdrawal - Online</td><td>$250.00</td><td>Pending</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section id="accounts">
+            <h2>Accounts</h2>
+            <p>Your bank accounts go here.</p>
+        </section>
+        <section id="cards">
+            <h2>Cards</h2>
+            <p>Your credit and debit card management here.</p>
+        </section>
+        <section id="transfers">
+            <h2>Transfers</h2>
+            <p>Transfer money to others.</p>
+        </section>
+        <section id="bills">
+            <h2>Bills</h2>
+            <p>Pay your bills easily.</p>
+        </section>
+        <section id="profile">
+            <h2>Profile</h2>
+            <p>Your personal information goes here.</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 FAB Banking. All rights reserved.</p>
+    </footer>
 </body>
 </html>
