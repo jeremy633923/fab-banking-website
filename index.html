@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAB Digital Banking | UAE</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --fab-blue: #003366;
+            --fab-gold: #c5a059;
+            --success: #2e7d32;
+            --bg: #f4f7f9;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: #333; }
+
+        /* --- LOGIN SECTION --- */
+        #login-page {
+            height: 100vh; display: flex; justify-content: center; align-items: center;
+            background: linear-gradient(rgba(0,51,102,0.8), rgba(0,51,102,0.8)), url('https://www.bankfab.com/-/media/fab/images/personal/hero-banners/personal-home-banner.jpg');
+            background-size: cover;
+        }
+        .login-card { background: white; padding: 40px; border-radius: 12px; width: 380px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .login-card input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; }
+        .btn-login { width: 100%; padding: 14px; background: var(--fab-blue); color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; }
+
+        /* --- APP SHELL (HIDDEN ON LOAD) --- */
+        #app-shell { display: none; min-height: 100vh; }
+        
+        /* Sidebar Navigation */
+        .sidebar { width: 260px; background: var(--fab-blue); height: 100vh; position: fixed; color: white; padding: 30px 0; }
+        .sidebar h1 { padding: 0 30px; margin-bottom: 40px; font-size: 24px; letter-spacing: 2px; }
+        .nav-item { padding: 15px 30px; cursor: pointer; transition: 0.3s; opacity: 0.7; font-size: 14px; }
+        .nav-item:hover, .nav-item.active { opacity: 1; background: rgba(255,255,255,0.1); border-left: 4px solid var(--fab-gold); }
+
+        /* Main Content */
+        .content { margin-left: 260px; padding: 40px; }
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* Components */
+        .card-box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        .balance-hero { background: var(--fab-blue); color: white; padding: 35px; border-radius: 15px; margin-bottom: 30px; }
+        .progress-bar { height: 10px; background: #eee; border-radius: 5px; margin: 15px 0; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--fab-gold); width: 65%; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { text-align: left; font-size: 12px; color: #888; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        td { padding: 15px 0; border-bottom: 1px solid #f9f9f9; font-size: 14px; }
+        .neg { color: #d32f2f; font-weight: 600; }
+        .pos { color: var(--success); font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <div id="login-page">
+        <div class="login-card">
+            <h1 style="color:var(--fab-blue); margin-bottom:20px;">FAB</h1>
+            <input type="text" placeholder="User ID">
+            <input type="password" placeholder="Password">
+            <button class="btn-login" onclick="loginBypass()">SECURE SIGN IN</button>
+        </div>
+    </div>
+
+    <div id="app-shell">
+        <div class="sidebar">
+            <h1>FAB</h1>
+            <div class="nav-item active" onclick="showPage('dashboard', this)">Dashboard</div>
+            <div class="nav-item" onclick="showPage('savings', this)">Savings Goals</div>
+            <div class="nav-item" onclick="showPage('cards', this)">My Cards</div>
+            <div class="nav-item" onclick="location.reload()" style="margin-top:50px; color: #ffab91;">Logout</div>
+        </div>
+
+        <div class="content">
+            
+            <div id="dashboard" class="page active">
+                <div class="balance-hero">
+                    <p style="opacity: 0.8; font-size: 12px; letter-spacing: 1px;">TOTAL CURRENT BALANCE</p>
+                    <h1 style="font-size: 42px; margin: 10px 0;">54,000.00 AED</h1>
+                    <p style="font-size: 14px;">Acc: **** 8282 | <span style="color:var(--fab-gold)">Active</span></p>
+                </div>
+
+                <div class="card-box">
+                    <h3>Recent Transactions</h3>
+                    <table>
+                        <thead><tr><th>DATE</th><th>DESCRIPTION</th><th>AMOUNT</th></tr></thead>
+                        <tbody>
+                            <tr><td>Mar 20, 2026</td><td>Transfer to Abdulla Humaid</td><td class="neg">- 19,602.90 AED</td></tr>
+                            <tr><td>Mar 18, 2026</td><td>Salary Credit - ADPC</td><td class="pos">+ 25,000.00 AED</td></tr>
+                            <tr><td>Mar 18, 2026</td><td>Transfer to Hamdan Shaid</td><td class="neg">- 10,525.00 AED</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="savings" class="page">
+                <h2 style="margin-bottom:25px; color:var(--fab-blue)">Savings & Wealth</h2>
+                <div class="card-box">
+                    <div style="display:flex; justify-content:space-between">
+                        <h4>New Home Fund</h4>
+                        <span style="font-weight:700">65% Achieved</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill"></div></div>
+                    <p style="font-size:13px; color:#666">Saved: 130,000 AED | Target: 200,000 AED</p>
+                </div>
+                <div class="card-box">
+                    <h4>iSave Account</h4>
+                    <p style="font-size: 24px; font-weight:700; margin: 10px 0;">12,450.50 AED</p>
+                    <p style="font-size: 12px; color: var(--success);">+ 2.5% Annual Interest Earned</p>
+                </div>
+            </div>
+
+            <div id="cards" class="page">
+                <h2 style="margin-bottom:25px; color:var(--fab-blue)">My Cards</h2>
+                <div class="card-box" style="background: linear-gradient(45deg, #2c3e50, #000); color:white; width: 320px; height: 190px; position:relative">
+                    <p style="font-size: 12px; opacity:0.7">FAB WORLD ELITE</p>
+                    <div style="margin-top:50px; font-size: 18px; letter-spacing: 2px;">**** **** **** 9012</div>
+                    <div style="position:absolute; bottom:20px; left:25px">
+                        <p style="font-size:10px; opacity:0.6">VALID THRU</p>
+                        <p>12/28</p>
+                    </div>
+                    <div style="position:absolute; bottom:20px; right:25px; font-weight:700">VISA</div>
+                </div>
+                <div class="card-box" style="margin-top:20px">
+                    <h4>Card Actions</h4>
+                    <button style="margin-top:10px; padding:8px 15px; cursor:pointer">View PIN</button>
+                    <button style="margin-top:10px; padding:8px 15px; cursor:pointer; color:red">Freeze Card</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // BYPASS LOGIC
+        function loginBypass() {
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('app-shell').style.display = 'flex';
+        }
+
+        // NAVIGATION LOGIC
+        function showPage(pageId, element) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(p => p.classList.remove('active'));
+            
+            // Remove active class from nav items
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(n => n.classList.remove('active'));
+
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            element.classList.add('active');
+        }
+    </script>
+</body>
+</html>
