@@ -3,158 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAB Digital Banking | UAE</title>
+    <title>Digital Banking Portal</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
         :root {
-            --fab-blue: #003366;
-            --fab-gold: #c5a059;
-            --success: #2e7d32;
-            --bg: #f4f7f9;
-            --white: #ffffff;
+            --adib-blue: #003366;
+            --adib-light-blue: #eef2f7;
+            --text-dark: #1c1e21;
+            --text-gray: #70757a;
+            --success: #28a745;
+            --danger: #dc3545;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg); color: #333; }
+        body { background-color: #f8f9fb; color: var(--text-dark); }
 
-        /* --- LOGIN SECTION --- */
+        /* --- LOGIN PAGE --- */
         #login-page {
             height: 100vh; display: flex; justify-content: center; align-items: center;
-            background: linear-gradient(rgba(0,51,102,0.8), rgba(0,51,102,0.8)), url('https://www.bankfab.com/-/media/fab/images/personal/hero-banners/personal-home-banner.jpg');
-            background-size: cover;
+            background: #fff;
         }
-        .login-card { background: white; padding: 40px; border-radius: 12px; width: 380px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .login-card input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; }
-        .btn-login { width: 100%; padding: 14px; background: var(--fab-blue); color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; }
+        .splash-logo { width: 180px; margin-bottom: 30px; }
+        .login-container { text-align: center; width: 100%; max-width: 350px; padding: 20px; }
+        .login-input { 
+            width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ddd; 
+            border-radius: 10px; background: #f9f9f9; font-size: 16px;
+        }
+        .btn-auth { 
+            width: 100%; padding: 15px; background: var(--adib-blue); color: white; 
+            border: none; border-radius: 10px; font-weight: 600; margin-top: 15px; cursor: pointer;
+        }
 
-        /* --- APP SHELL (HIDDEN ON LOAD) --- */
-        #app-shell { display: none; min-height: 100vh; }
+        /* --- DASHBOARD SHELL --- */
+        #app-shell { display: none; flex-direction: column; min-height: 100vh; }
         
-        /* Sidebar Navigation */
-        .sidebar { width: 260px; background: var(--fab-blue); height: 100vh; position: fixed; color: white; padding: 30px 0; }
-        .sidebar h1 { padding: 0 30px; margin-bottom: 40px; font-size: 24px; letter-spacing: 2px; }
-        .nav-item { padding: 15px 30px; cursor: pointer; transition: 0.3s; opacity: 0.7; font-size: 14px; }
-        .nav-item:hover, .nav-item.active { opacity: 1; background: rgba(255,255,255,0.1); border-left: 4px solid var(--fab-gold); }
+        header { 
+            background: white; padding: 15px 20px; display: flex; 
+            justify-content: space-between; align-items: center; border-bottom: 1px solid #eee;
+        }
 
-        /* Main Content */
-        .content { margin-left: 260px; padding: 40px; }
-        .page { display: none; }
-        .page.active { display: block; }
+        .main-container { padding: 20px; max-width: 500px; margin: 0 auto; width: 100%; }
 
-        /* Components */
-        .card-box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 25px; }
-        .balance-hero { background: var(--fab-blue); color: white; padding: 35px; border-radius: 15px; margin-bottom: 30px; }
-        .progress-bar { height: 10px; background: #eee; border-radius: 5px; margin: 15px 0; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--fab-gold); width: 65%; }
+        /* Account Card Style from Video */
+        .account-card {
+            background: white; border-radius: 20px; padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px;
+        }
+        .acc-type { color: var(--text-gray); font-size: 14px; margin-bottom: 5px; }
+        .acc-num { font-size: 13px; color: var(--text-gray); margin-bottom: 15px; }
+        .balance-label { font-size: 14px; color: var(--text-dark); font-weight: 500; }
+        .balance-val { font-size: 32px; font-weight: 700; color: var(--adib-blue); margin: 5px 0; }
+        .iban-box { 
+            background: var(--adib-light-blue); padding: 10px; border-radius: 8px; 
+            font-size: 12px; color: var(--adib-blue); display: flex; justify-content: space-between;
+        }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th { text-align: left; font-size: 12px; color: #888; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        td { padding: 15px 0; border-bottom: 1px solid #f9f9f9; font-size: 14px; }
-        .neg { color: #d32f2f; font-weight: 600; }
-        .pos { color: var(--success); font-weight: 600; }
+        /* Quick Action Icons */
+        .actions-grid { 
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; 
+            margin: 20px 0; text-align: center;
+        }
+        .action-item { cursor: pointer; }
+        .action-icon { 
+            width: 50px; height: 50px; background: white; border-radius: 15px; 
+            display: flex; align-items: center; justify-content: center; 
+            margin: 0 auto 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            font-size: 20px;
+        }
+        .action-item p { font-size: 11px; font-weight: 500; color: var(--text-dark); }
+
+        /* Transactions Style */
+        .trans-header { display: flex; justify-content: space-between; margin: 20px 0 10px; font-weight: 600; }
+        .trans-list { background: white; border-radius: 20px; padding: 10px 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        .trans-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f5f5f5; }
+        .trans-info p { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+        .trans-info span { font-size: 12px; color: var(--text-gray); }
+        .trans-amt { font-size: 14px; font-weight: 700; }
+        
+        .pos { color: var(--success); }
+        .neg { color: var(--text-dark); }
     </style>
 </head>
 <body>
 
     <div id="login-page">
-        <div class="login-card">
-            <h1 style="color:var(--fab-blue); margin-bottom:20px;">FAB</h1>
-            <input type="text" placeholder="User ID">
-            <input type="password" placeholder="Password">
-            <button class="btn-login" onclick="loginBypass()">SECURE SIGN IN</button>
+        <div class="login-container">
+            <h1 style="color:var(--adib-blue); font-weight:800; margin-bottom:10px;">ADIB</h1>
+            <p style="color:var(--text-gray); font-size:14px; margin-bottom:30px;">Welcome Back</p>
+            <input type="text" class="login-input" placeholder="User ID">
+            <input type="password" class="login-input" placeholder="Password">
+            <button class="btn-auth" onclick="bypassLogin()">Sign In</button>
         </div>
     </div>
 
     <div id="app-shell">
-        <div class="sidebar">
-            <h1>FAB</h1>
-            <div class="nav-item active" onclick="showPage('dashboard', this)">Dashboard</div>
-            <div class="nav-item" onclick="showPage('savings', this)">Savings Goals</div>
-            <div class="nav-item" onclick="showPage('cards', this)">My Cards</div>
-            <div class="nav-item" onclick="location.reload()" style="margin-top:50px; color: #ffab91;">Logout</div>
-        </div>
+        <header>
+            <span style="font-size: 18px; font-weight: 700; color: var(--adib-blue);">Accounts</span>
+            <div onclick="location.reload()" style="font-size: 12px; color: var(--danger); font-weight: 600; cursor: pointer;">Logout</div>
+        </header>
 
-        <div class="content">
-            
-            <div id="dashboard" class="page active">
-                <div class="balance-hero">
-                    <p style="opacity: 0.8; font-size: 12px; letter-spacing: 1px;">TOTAL CURRENT BALANCE</p>
-                    <h1 style="font-size: 42px; margin: 10px 0;">54,000.00 AED</h1>
-                    <p style="font-size: 14px;">Acc: **** 8282 | <span style="color:var(--fab-gold)">Active</span></p>
-                </div>
-
-                <div class="card-box">
-                    <h3>Recent Transactions</h3>
-                    <table>
-                        <thead><tr><th>DATE</th><th>DESCRIPTION</th><th>AMOUNT</th></tr></thead>
-                        <tbody>
-                            <tr><td>Mar 20, 2026</td><td>Transfer to Abdulla Humaid</td><td class="neg">- 19,602.90 AED</td></tr>
-                            <tr><td>Mar 18, 2026</td><td>Salary Credit - ADPC</td><td class="pos">+ 25,000.00 AED</td></tr>
-                            <tr><td>Mar 18, 2026</td><td>Transfer to Hamdan Shaid</td><td class="neg">- 10,525.00 AED</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="savings" class="page">
-                <h2 style="margin-bottom:25px; color:var(--fab-blue)">Savings & Wealth</h2>
-                <div class="card-box">
-                    <div style="display:flex; justify-content:space-between">
-                        <h4>New Home Fund</h4>
-                        <span style="font-weight:700">65% Achieved</span>
+        <div class="main-container">
+            <div class="account-card">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div>
+                        <p class="acc-type">Savings Account</p>
+                        <p class="acc-num">27195985</p>
                     </div>
-                    <div class="progress-bar"><div class="progress-fill"></div></div>
-                    <p style="font-size:13px; color:#666">Saved: 130,000 AED | Target: 200,000 AED</p>
+                    <span style="font-size: 12px; color: var(--success); font-weight: 600;">Active ●</span>
                 </div>
-                <div class="card-box">
-                    <h4>iSave Account</h4>
-                    <p style="font-size: 24px; font-weight:700; margin: 10px 0;">12,450.50 AED</p>
-                    <p style="font-size: 12px; color: var(--success);">+ 2.5% Annual Interest Earned</p>
+                
+                <p class="balance-label">Available balance</p>
+                <div class="balance-val">54,000.95 <span style="font-size:18px">AED</span></div>
+                
+                <div class="iban-box">
+                    <span>AE310500000000027195985</span>
+                    <strong style="cursor:pointer">Copy</strong>
                 </div>
             </div>
 
-            <div id="cards" class="page">
-                <h2 style="margin-bottom:25px; color:var(--fab-blue)">My Cards</h2>
-                <div class="card-box" style="background: linear-gradient(45deg, #2c3e50, #000); color:white; width: 320px; height: 190px; position:relative">
-                    <p style="font-size: 12px; opacity:0.7">FAB WORLD ELITE</p>
-                    <div style="margin-top:50px; font-size: 18px; letter-spacing: 2px;">**** **** **** 9012</div>
-                    <div style="position:absolute; bottom:20px; left:25px">
-                        <p style="font-size:10px; opacity:0.6">VALID THRU</p>
-                        <p>12/28</p>
+            <div class="actions-grid">
+                <div class="action-item"><div class="action-icon">📄</div><p>View statement</p></div>
+                <div class="action-item"><div class="action-icon">ℹ️</div><p>Account details</p></div>
+                <div class="action-item"><div class="action-icon">🏧</div><p>Cardless Cash</p></div>
+                <div class="action-item"><div class="action-icon">📜</div><p>Request certificate</p></div>
+            </div>
+
+            <div class="trans-header">
+                <span>Transactions</span>
+                <span style="color:var(--adib-blue); font-size:13px; cursor:pointer">View all</span>
+            </div>
+
+            <div class="trans-list">
+                <p style="font-size:11px; color:var(--text-gray); margin: 10px 0;'>TODAY</p>
+                <div class="trans-row">
+                    <div class="trans-info">
+                        <p>Transfer Withdrawal-MOBN</p>
+                        <span>TRANSFER FROM 27195985</span>
                     </div>
-                    <div style="position:absolute; bottom:20px; right:25px; font-weight:700">VISA</div>
+                    <div class="trans-amt neg">-50.00</div>
                 </div>
-                <div class="card-box" style="margin-top:20px">
-                    <h4>Card Actions</h4>
-                    <button style="margin-top:10px; padding:8px 15px; cursor:pointer">View PIN</button>
-                    <button style="margin-top:10px; padding:8px 15px; cursor:pointer; color:red">Freeze Card</button>
+                <div class="trans-row">
+                    <div class="trans-info">
+                        <p>Transfer Withdrawal-MOBN</p>
+                        <span>TRANSFER FROM 27195985</span>
+                    </div>
+                    <div class="trans-amt neg">-470.00</div>
+                </div>
+
+                <p style="font-size:11px; color:var(--text-gray); margin: 20px 0 10px;">YESTERDAY</p>
+                <div class="trans-row">
+                    <div class="trans-info">
+                        <p>Transfer Deposit-MOBN</p>
+                        <span>TRANSFER FROM 284071...</span>
+                    </div>
+                    <div class="trans-amt pos">+500.00</div>
+                </div>
+                <div class="trans-row">
+                    <div class="trans-info">
+                        <p>Force Posted Debit</p>
+                        <span>POS-15/03/26-Tabby</span>
+                    </div>
+                    <div class="trans-amt neg">-833.74</div>
                 </div>
             </div>
-
         </div>
     </div>
 
     <script>
-        // BYPASS LOGIC
-        function loginBypass() {
+        function bypassLogin() {
+            // Instant transition to the account view
             document.getElementById('login-page').style.display = 'none';
             document.getElementById('app-shell').style.display = 'flex';
-        }
-
-        // NAVIGATION LOGIC
-        function showPage(pageId, element) {
-            // Hide all pages
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(p => p.classList.remove('active'));
-            
-            // Remove active class from nav items
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(n => n.classList.remove('active'));
-
-            // Show selected page
-            document.getElementById(pageId).classList.add('active');
-            element.classList.add('active');
+            window.scrollTo(0, 0);
         }
     </script>
 </body>
