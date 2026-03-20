@@ -3,85 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAB Banking App</title>
+    <title>ADIB Banking Platform</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="script.js"></script>
 </head>
 <body>
     <header>
-        <h1>FAB Banking App</h1>
-        <nav>
-            <ul>
-                <li><a href="#dashboard">Dashboard</a></li>
-                <li><a href="#accounts">Accounts</a></li>
-                <li><a href="#cards">Cards</a></li>
-                <li><a href="#transfers">Transfers</a></li>
-                <li><a href="#bills">Bills</a></li>
-                <li><a href="#profile">Profile</a></li>
-            </ul>
-        </nav>
+        <h1>Welcome to ADIB Banking Platform</h1>
     </header>
+    <nav>
+        <ul>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+        </ul>
+    </nav>
     <main>
-        <section id="dashboard">
-            <h2>Dashboard</h2>
-            <div class="quick-actions">
-                <button onclick="openTransferForm()">Quick Transfer</button>
-                <button onclick="openBillPayment()">Pay Bills</button>
-                <button onclick="openCardManagement()">Manage Cards</button>
-            </div>
-            <div class="transaction-history">
-                <h3>Recent Transactions</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Description</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>2026-03-18</td><td>Transfer to John Doe</td><td>$50.00</td><td>Completed</td></tr>
-                        <tr><td>2026-03-17</td><td>Bill Payment - Internet</td><td>$75.00</td><td>Completed</td></tr>
-                        <tr><td>2026-03-16</td><td>Deposit from Employer</td><td>$1500.00</td><td>Completed</td></tr>
-                        <tr><td>2026-03-15</td><td>Withdrawal - ATM</td><td>$100.00</td><td>Completed</td></tr>
-                        <tr><td>2026-03-14</td><td>Purchase at Store</td><td>$30.00</td><td>Completed</td></tr>
-                        <tr><td>2026-03-13</td><td>Transfer to Jane Smith</td><td>$200.00</td><td>Pending</td></tr>
-                        <tr><td>2026-03-12</td><td>Bill Payment - Electricity</td><td>$60.00</td><td>Completed</td></tr>
-                        <tr><td>2026-03-11</td><td>Deposit from Family</td><td>$300.00</td><td>Completed</td></tr>
-                        <tr><td>2026-03-10</td><td>Transfer to Sam Wilson</td><td>$150.00</td><td>Completed</td></tr>
-                        <tr><td>2026-03-09</td><td>Purchase Online</td><td>$25.00</td><td>Completed</td></tr>
-                        <tr><td>2026-03-08</td><td>Charity Donation</td><td>$20.00</td><td>Completed</td></tr>
-                        <tr><td>2026-03-07</td><td>Transfer from Investment</td><td>$500.00</td><td>Completed</td></tr>
-                        <tr><td>2026-03-06</td><td>ATM Fee</td><td>$2.00</td><td>Completed</td></tr>
-                        <tr><td>2026-03-05</td><td>Withdrawal - Online</td><td>$250.00</td><td>Pending</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-        <section id="accounts">
-            <h2>Accounts</h2>
-            <p>Your bank accounts go here.</p>
-        </section>
-        <section id="cards">
-            <h2>Cards</h2>
-            <p>Your credit and debit card management here.</p>
-        </section>
-        <section id="transfers">
-            <h2>Transfers</h2>
-            <p>Transfer money to others.</p>
-        </section>
-        <section id="bills">
-            <h2>Bills</h2>
-            <p>Pay your bills easily.</p>
-        </section>
-        <section id="profile">
-            <h2>Profile</h2>
-            <p>Your personal information goes here.</p>
-        </section>
+        <h2>Login</h2>
+        <form action="dashboard.html" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
     </main>
     <footer>
-        <p>&copy; 2026 FAB Banking. All rights reserved.</p>
+        <p>&copy; 2026 ADIB Banking Platform. All rights reserved.</p>
     </footer>
 </body>
 </html>
